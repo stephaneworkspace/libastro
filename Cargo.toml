@@ -1,0 +1,29 @@
+[package]
+name = "libastro"
+version = "0.1.0"
+authors = ["Stéphane <s.bressani@bluewin.ch>"]
+edition = "2018"
+#keyword = ["astrology", "swiss ephememeris", "planet", "ephemeris"]
+documentation = "https://github.com/stephaneworkspace/libastro"
+repository = "https://github.com/stephaneworkspace/libastroo"
+description = "Astrology lib connected to the C lib Swiss ephemeris with rexport into c"
+license-file = "LICENSE"
+[lib]
+crate-type = ["lib", "staticlib"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+astrology = "0.1.71"
+libswe-sys = "0.1.56"
+serde = { version = "1.0.102", features = ["derive"] }
+serde_json = "1.0.41"
+serde_derive = "1.0.102"
+strum = "0.17.1"
+strum_macros = "0.17.1"
+svg = "0.6.0"
+base64 = "0.11.0"
+libc = "0.2.67"
+
+[build-dependencies]
+cbindgen = "0.12"
