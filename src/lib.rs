@@ -25,10 +25,9 @@ pub use astrology::svg_draw;
 pub use astrology::svg_draw::DataChartNatal;
 pub use astrology::svg_draw::{DataObjectSvg, DataObjectType};
 pub use libc::size_t;
-use libswe_sys::sweconst::Language;
 use libswe_sys::swerust::handler_swe02;
 use serde::Deserialize;
-use std::ffi::{CStr, CString};
+use std::ffi::CString;
 pub use std::os::raw::{c_char, c_double, c_int};
 
 #[derive(Deserialize, Debug, Clone)]
