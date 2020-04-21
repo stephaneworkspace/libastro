@@ -25,9 +25,10 @@ pub use astrology::svg_draw;
 pub use astrology::svg_draw::DataChartNatal;
 pub use astrology::svg_draw::{DataObjectSvg, DataObjectType};
 pub use libc::size_t;
+use libswe_sys::sweconst::Language;
 use libswe_sys::swerust::handler_swe02;
 use serde::Deserialize;
-use std::ffi::CString;
+use std::ffi::{CStr, CString};
 pub use std::os::raw::{c_char, c_double, c_int};
 
 #[derive(Deserialize, Debug, Clone)]
@@ -43,41 +44,11 @@ pub struct Data {
     pub lng: f64,
 }
 
-#[no_mangle]
-pub struct DataChartNatalC {
-    pub year: c_int,
-    pub month: c_int,
-    pub day: c_int,
-    pub hourf32: c_double,
-    pub hour: c_int,
-    pub min: c_int,
-    pub sec: c_double,
-    pub lat: c_double,
-    pub lng: c_double,
-}
-
 /// Return version of api
 #[no_mangle]
 pub extern "C" fn sweversion() -> *const c_char {
     //CString::new(get_version()).unwrap().into_raw()
     CString::new(handler_swe02::version()).unwrap().into_raw()
-}
-/*
-// C -> Rust -> C
-// This is the first try
-#[repr(C)]
-pub enum ObjectType {
-    Chart,
-    House,
-    Zodiac,
-}
-
-#[repr(C)]
-pub struct ObjectCanvas {
-    size_x: c_double,
-    size_y: c_double,
-    pos_x: c_double,
-    pos_y: c_double,
 }
 
 #[no_mangle]
@@ -94,17 +65,17 @@ pub extern "C" fn compute(
     max_size: c_double,
     path: *const c_char,
 ) -> *const c_char {
-    let lang = Language::English;
-    let d = DataChartNatalC {
+    let lang = Language::French;
+    let d = DataChartNatal {
         year: year,
         month: month,
         day: day,
-        hourf32: hourf32,
+        hourf32: hourf32 as f32,
         hour: hour,
         min: min,
-        sec: sec,
-        lat: lat,
-        lng: lng,
+        sec: sec as f32,
+        lat: lat as f32,
+        lng: lng as f32,
     };
     let path_c_str = unsafe { CStr::from_ptr(path) };
     let path_str: &str = path_c_str.to_str().unwrap();
@@ -137,28 +108,28 @@ pub extern "C" fn compute_transit(
     max_size: c_double,
     path: *const c_char,
 ) -> *const c_char {
-    let lang = Language::English;
-    let d = DataChartNatalC {
+    let lang = Language::French;
+    let d = DataChartNatal {
         year: year,
         month: month,
         day: day,
-        hourf32: hourf32,
+        hourf32: hourf32 as f32,
         hour: hour,
         min: min,
-        sec: sec,
-        lat: lat,
-        lng: lng,
+        sec: sec as f32,
+        lat: lat as f32,
+        lng: lng as f32,
     };
-    let d_t = DataChartNatalC {
+    let d_t = DataChartNatal {
         year: year_transit,
         month: month_transit,
         day: day_transit,
-        hourf32: hourf32_transit,
+        hourf32: hourf32_transit as f32,
         hour: hour_transit,
         min: min_transit,
-        sec: sec_transit,
-        lat: lat_transit,
-        lng: lng_transit,
+        sec: sec_transit as f32,
+        lat: lat_transit as f32,
+        lng: lng_transit as f32,
     };
     let path_c_str = unsafe { CStr::from_ptr(path) };
     let path_str: &str = path_c_str.to_str().unwrap();
@@ -177,7 +148,7 @@ pub extern "C" fn aspects() -> *const c_char {
         .unwrap()
         .into_raw()
 }
-*/
+
 /// Unit test
 #[cfg(test)]
 mod tests {
