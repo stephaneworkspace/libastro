@@ -59,12 +59,10 @@ pub extern "C" fn compute(
         Some(Language::French) => Language::French,
         None => Language::English,
     };
-    let hourf32: f32 = hour as f32 + (min as f32 * 0.1);
     let d = DataChartNatal {
         year: year,
         month: month,
         day: day,
-        hourf32: hourf32,
         hour: hour,
         min: min,
         sec: sec as f32,
@@ -108,24 +106,20 @@ pub extern "C" fn compute_transit(
         Some(Language::French) => Language::French,
         None => Language::English,
     };
-    let hourf32: f32 = hour as f32 + (min as f32 * 0.1);
     let d = DataChartNatal {
         year: year,
         month: month,
         day: day,
-        hourf32: hourf32,
         hour: hour,
         min: min,
         sec: sec as f32,
         lat: lat as f32,
         lng: lng as f32,
     };
-    let hourf32_transit: f32 = hour_transit as f32 + (min_transit as f32 * 0.1);
     let d_t = DataChartNatal {
         year: year_transit,
         month: month_transit,
         day: day_transit,
-        hourf32: hourf32_transit,
         hour: hour_transit,
         min: min_transit,
         sec: sec_transit as f32,
