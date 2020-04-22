@@ -27,22 +27,9 @@ pub use astrology::svg_draw::{DataObjectSvg, DataObjectType};
 pub use libc::size_t;
 use libswe_sys::sweconst::Language;
 use libswe_sys::swerust::handler_swe02;
-use serde::Deserialize;
+use num_traits::FromPrimitive;
 use std::ffi::{CStr, CString};
 pub use std::os::raw::{c_char, c_double, c_int};
-
-#[derive(Deserialize, Debug, Clone)]
-pub struct Data {
-    pub year: i32,
-    pub month: i32,
-    pub day: i32,
-    pub hourf32: f64,
-    pub hour: i32,
-    pub min: i32,
-    pub sec: f64,
-    pub lat: f64,
-    pub lng: f64,
-}
 
 /// Return version of api
 #[no_mangle]
@@ -51,26 +38,34 @@ pub extern "C" fn sweversion() -> *const c_char {
     CString::new(handler_swe02::version()).unwrap().into_raw()
 }
 
+/// language = 0 => English
+/// language = 1 => French
 #[no_mangle]
 pub extern "C" fn compute(
     year: c_int,
     month: c_int,
     day: c_int,
-    hourf32: c_double,
+    // hourf32: c_double, unused
     hour: c_int,
     min: c_int,
     sec: c_double,
     lat: c_double,
     lng: c_double,
     max_size: c_double,
+    language: c_int,
     path: *const c_char,
 ) -> *const c_char {
-    let lang = Language::French;
+    let lang: Language = match FromPrimitive::from_i32(language as i32) {
+        Some(Language::English) => Language::English,
+        Some(Language::French) => Language::French,
+        None => Language::English,
+    };
+    let hourf32: f32 = hour as f32 + (min as f32 * 0.1);
     let d = DataChartNatal {
         year: year,
         month: month,
         day: day,
-        hourf32: hourf32 as f32,
+        hourf32: hourf32,
         hour: hour,
         min: min,
         sec: sec as f32,
@@ -85,12 +80,14 @@ pub extern "C" fn compute(
         .into_raw()
 }
 
+/// language = 0 => English
+/// language = 1 => French
 #[no_mangle]
 pub extern "C" fn compute_transit(
     year: c_int,
     month: c_int,
     day: c_int,
-    hourf32: c_double,
+    //hourf32: c_double, unused
     hour: c_int,
     min: c_int,
     sec: c_double,
@@ -99,32 +96,39 @@ pub extern "C" fn compute_transit(
     year_transit: c_int,
     month_transit: c_int,
     day_transit: c_int,
-    hourf32_transit: c_double,
+    //hourf32_transit: c_double, unused
     hour_transit: c_int,
     min_transit: c_int,
     sec_transit: c_double,
     lat_transit: c_double,
     lng_transit: c_double,
     max_size: c_double,
+    language: c_int,
     path: *const c_char,
 ) -> *const c_char {
-    let lang = Language::French;
+    let lang: Language = match FromPrimitive::from_i32(language as i32) {
+        Some(Language::English) => Language::English,
+        Some(Language::French) => Language::French,
+        None => Language::English,
+    };
+    let hourf32: f32 = hour as f32 + (min as f32 * 0.1);
     let d = DataChartNatal {
         year: year,
         month: month,
         day: day,
-        hourf32: hourf32 as f32,
+        hourf32: hourf32,
         hour: hour,
         min: min,
         sec: sec as f32,
         lat: lat as f32,
         lng: lng as f32,
     };
+    let hourf32_transit: f32 = hour_transit as f32 + (min_transit as f32 * 0.1);
     let d_t = DataChartNatal {
         year: year_transit,
         month: month_transit,
         day: day_transit,
-        hourf32: hourf32_transit as f32,
+        hourf32: hourf32_transit,
         hour: hour_transit,
         min: min_transit,
         sec: sec_transit as f32,
@@ -140,9 +144,15 @@ pub extern "C" fn compute_transit(
         .into_raw()
 }
 
+/// language = 0 => English
+/// language = 1 => French
 #[no_mangle]
-pub extern "C" fn aspects() -> *const c_char {
-    let lang = Language::French;
+pub extern "C" fn aspects(language: c_int) -> *const c_char {
+    let lang: Language = match FromPrimitive::from_i32(language as i32) {
+        Some(Language::English) => Language::English,
+        Some(Language::French) => Language::French,
+        None => Language::English,
+    };
     let data = svg_draw::all_aspects(lang);
     CString::new(serde_json::to_string(&data).unwrap())
         .unwrap()
