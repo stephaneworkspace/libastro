@@ -25,45 +25,40 @@ pub extern "C" fn sweversion() -> *const c_char {
 
 For get a json with all svg and position inside as a pointer const c_char:
 ```
+/// language = 0 => English
+/// language = 1 => French
+#[no_mangle]
 pub extern "C" fn compute(
     year: c_int,
     month: c_int,
     day: c_int,
-    hourf32: c_double,
     hour: c_int,
     min: c_int,
     sec: c_double,
     lat: c_double,
     lng: c_double,
     max_size: c_double,
+    language: c_int,
     path: *const c_char,
 ) -> *const c_char {
-    let d = DataChartNatalC {
+    let lang: Language = match FromPrimitive::from_i32(language as i32) {
+        Some(Language::English) => Language::English,
+        Some(Language::French) => Language::French,
+        None => Language::English,
+    };
+    let d = DataChartNatal {
         year: year,
         month: month,
         day: day,
-        hourf32: hourf32,
         hour: hour,
         min: min,
-        sec: sec,
-        lat: lat,
-        lng: lng,
+        sec: sec as f32,
+        lat: lat as f32,
+        lng: lng as f32,
     };
     let path_c_str = unsafe { CStr::from_ptr(path) };
     let path_str: &str = path_c_str.to_str().unwrap();
-    let data = astrology_draw_svg::chart(max_size as f32, d, &path_str);
-    CString::new(serde_json::to_string(&data).unwrap())
-        .unwrap()
-        .into_raw()
-}
-```
-
-For all aspects (only major at this moment)
-
-```
-#[no_mangle]
-pub extern "C" fn aspects() -> *const c_char {
-    let data = astrology_draw_svg::all_aspects();
+    let data = svg_draw::chart(max_size as f32, d, &path_str, lang);
     CString::new(serde_json::to_string(&data).unwrap())
         .unwrap()
         .into_raw()
@@ -74,12 +69,14 @@ pub extern "C" fn aspects() -> *const c_char {
 For transit
 
 ```
+
+/// language = 0 => English
+/// language = 1 => French
 #[no_mangle]
 pub extern "C" fn compute_transit(
     year: c_int,
     month: c_int,
     day: c_int,
-    hourf32: c_double,
     hour: c_int,
     min: c_int,
     sec: c_double,
@@ -88,52 +85,74 @@ pub extern "C" fn compute_transit(
     year_transit: c_int,
     month_transit: c_int,
     day_transit: c_int,
-    hourf32_transit: c_double,
     hour_transit: c_int,
     min_transit: c_int,
     sec_transit: c_double,
     lat_transit: c_double,
     lng_transit: c_double,
     max_size: c_double,
+    language: c_int,
     path: *const c_char,
 ) -> *const c_char {
-    let d = DataChartNatalC {
+    let lang: Language = match FromPrimitive::from_i32(language as i32) {
+        Some(Language::English) => Language::English,
+        Some(Language::French) => Language::French,
+        None => Language::English,
+    };
+    let d = DataChartNatal {
         year: year,
         month: month,
         day: day,
-        hourf32: hourf32,
         hour: hour,
         min: min,
-        sec: sec,
-        lat: lat,
-        lng: lng,
+        sec: sec as f32,
+        lat: lat as f32,
+        lng: lng as f32,
     };
-    let d_t = DataChartNatalC {
+    let d_t = DataChartNatal {
         year: year_transit,
         month: month_transit,
         day: day_transit,
-        hourf32: hourf32_transit,
         hour: hour_transit,
         min: min_transit,
-        sec: sec_transit,
-        lat: lat_transit,
-        lng: lng_transit,
+        sec: sec_transit as f32,
+        lat: lat_transit as f32,
+        lng: lng_transit as f32,
     };
     let path_c_str = unsafe { CStr::from_ptr(path) };
     let path_str: &str = path_c_str.to_str().unwrap();
-    let data = astrology_draw_svg::chart_with_transit(
-        max_size as f32,
-        d,
-        d_t,
-        &path_str,
-    );
+    let data =
+        svg_draw::chart_with_transit(max_size as f32, d, d_t, &path_str, lang);
+    CString::new(serde_json::to_string(&data).unwrap())
+        .unwrap()
+        .into_raw()
+}
+
+```
+For all aspects (only major at this moment)
+
+```
+/// language = 0 => English
+/// language = 1 => French
+#[no_mangle]
+pub extern "C" fn aspects(language: c_int) -> *const c_char {
+    let lang: Language = match FromPrimitive::from_i32(language as i32) {
+        Some(Language::English) => Language::English,
+        Some(Language::French) => Language::French,
+        None => Language::English,
+    };
+    let data = svg_draw::all_aspects(lang);
     CString::new(serde_json::to_string(&data).unwrap())
         .unwrap()
         .into_raw()
 }
 ```
 
+
 # Version
+0.1.2
+* Update connection with astrology crate
+
 0.1.1
 * Update doc
 
