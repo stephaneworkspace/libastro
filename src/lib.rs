@@ -45,7 +45,6 @@ pub extern "C" fn compute(
     year: c_int,
     month: c_int,
     day: c_int,
-    // hourf32: c_double, unused
     hour: c_int,
     min: c_int,
     sec: c_double,
@@ -87,7 +86,6 @@ pub extern "C" fn compute_transit(
     year: c_int,
     month: c_int,
     day: c_int,
-    //hourf32: c_double, unused
     hour: c_int,
     min: c_int,
     sec: c_double,
@@ -96,7 +94,6 @@ pub extern "C" fn compute_transit(
     year_transit: c_int,
     month_transit: c_int,
     day_transit: c_int,
-    //hourf32_transit: c_double, unused
     hour_transit: c_int,
     min_transit: c_int,
     sec_transit: c_double,
