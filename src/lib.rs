@@ -38,8 +38,19 @@ pub extern "C" fn sweversion() -> *const c_char {
     CString::new(handler_swe02::version()).unwrap().into_raw()
 }
 
-/// language = 0 => English
-/// language = 1 => French
+/// Compute natal chart in json
+///
+/// params :
+/// year     -> year of birth
+/// month    -> month of birth
+/// day      -> day of birth
+/// hour     -> hour of birth
+/// min      -> minute of birth
+/// sec      -> second of birth
+/// lat      -> latitude of birth
+/// lng      -> longitude of birth
+/// max_size -> size in pixel
+/// language -> 0 = english / 1 = french
 #[no_mangle]
 pub extern "C" fn compute(
     year: c_int,
@@ -77,8 +88,27 @@ pub extern "C" fn compute(
         .into_raw()
 }
 
-/// language = 0 => English
-/// language = 1 => French
+/// Compute natal with transit chart in json
+///
+/// params :
+/// year          -> year of birth
+/// month         -> month of birth
+/// day           -> day of birth
+/// hour          -> hour of birth
+/// min           -> minute of birth
+/// sec           -> second of birth
+/// lat           -> latitude of birth
+/// lng           -> longitude of birth
+/// year_transit  -> year of birth
+/// month_transit -> month of birth
+/// day_transit   -> day of birth
+/// hour_transit  -> hour of birth
+/// min_transit   -> minute of birth
+/// seco_transit  -> second of birth
+/// lat_transit   -> latitude of birth
+/// lng_transit   -> longitude of birth
+/// max_size      -> size in pixel
+/// language      -> 0 = english / 1 = french
 #[no_mangle]
 pub extern "C" fn compute_transit(
     year: c_int,
@@ -135,8 +165,10 @@ pub extern "C" fn compute_transit(
         .into_raw()
 }
 
-/// language = 0 => English
-/// language = 1 => French
+/// Return aspect json
+///
+/// params :
+/// language -> 0 = english / 1 = french
 #[no_mangle]
 pub extern "C" fn aspects(language: c_int) -> *const c_char {
     let lang: Language = match FromPrimitive::from_i32(language as i32) {

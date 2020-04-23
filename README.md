@@ -25,8 +25,6 @@ pub extern "C" fn sweversion() -> *const c_char {
 
 For get a json with all svg and position inside as a pointer const c_char:
 ```
-/// language = 0 => English
-/// language = 1 => French
 #[no_mangle]
 pub extern "C" fn compute(
     year: c_int,
@@ -70,8 +68,6 @@ For transit
 
 ```
 
-/// language = 0 => English
-/// language = 1 => French
 #[no_mangle]
 pub extern "C" fn compute_transit(
     year: c_int,
@@ -132,8 +128,6 @@ pub extern "C" fn compute_transit(
 For all aspects (only major at this moment)
 
 ```
-/// language = 0 => English
-/// language = 1 => French
 #[no_mangle]
 pub extern "C" fn aspects(language: c_int) -> *const c_char {
     let lang: Language = match FromPrimitive::from_i32(language as i32) {
@@ -150,6 +144,9 @@ pub extern "C" fn aspects(language: c_int) -> *const c_char {
 
 
 # Version
+0.1.3
+* Update doc
+
 0.1.2
 * Update connection with astrology crate
 
