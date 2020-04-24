@@ -144,6 +144,9 @@ pub extern "C" fn aspects(language: c_int) -> *const c_char {
 
 
 # Version
+0.1.4
+* Fix doc
+
 0.1.3
 * Update doc
 
