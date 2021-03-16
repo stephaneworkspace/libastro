@@ -11,17 +11,20 @@ fn main() {
         .join(format!("{}.h", package_name))
         .display()
         .to_string();
-    /*let config: cbindgen::Config = Config {
+    let config: cbindgen::Config = Config {
         namespace: Some(String::from("ffi")),
         ..Default::default()
     };
-    */
     let mut config: Config = Default::default();
     config.language = cbindgen::Language::C;
     cbindgen::generate_with_config(&crate_dir, config)
         .unwrap()
         .write_to_file(&output_file);
-    //.write_to_file("target/libastro.h");
+    let out_path = PathBuf::from(env::var_os("OUT_DIR").unwrap());
+    cbindgen::generate_with_config(&crate_dir, config)
+        .unwrap()
+        .write_to_file("target/libastro.h");
+    println!("{:?}", out_path.join("libastro.h"));
 }
 
 /// Find the location of the `target/` directory. Note that this may be
