@@ -1,6 +1,7 @@
 extern crate cbindgen;
 
 use cbindgen::Config;
+use cbindgen::generate_with_config;
 use std::env;
 use std::path::PathBuf;
 
@@ -11,19 +12,12 @@ fn main() {
         .join(format!("{}.h", package_name))
         .display()
         .to_string();
-    let config: cbindgen::Config = Config {
-        namespace: Some(String::from("ffi")),
-        ..Default::default()
-    };
     let mut config: Config = Default::default();
     config.language = cbindgen::Language::C;
-    cbindgen::generate_with_config(&crate_dir, config)
+    generate_with_config(&crate_dir, config)
         .unwrap()
         .write_to_file(&output_file);
     let out_path = PathBuf::from(env::var_os("OUT_DIR").unwrap());
-    cbindgen::generate_with_config(&crate_dir, config)
-        .unwrap()
-        .write_to_file("target/libastro.h");
     println!("{:?}", out_path.join("libastro.h"));
 }
 
