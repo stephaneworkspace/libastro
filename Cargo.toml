@@ -9,7 +9,7 @@ repository = "https://github.com/stephaneworkspace/libastroo"
 description = "Astrology lib connected to the C lib Swiss ephemeris with rexport into c"
 license-file = "LICENSE"
 [lib]
-crate-type = ["lib", "staticlib"]
+crate-type = ["staticlib"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

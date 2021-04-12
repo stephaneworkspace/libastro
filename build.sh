@@ -2,6 +2,8 @@
 cargo build
 cargo test
 
+# TODO non debug, release
+
 # Group binary with lipo
 cargo +ios-arm64-nightly-2021-02-25 build --target aarch64-apple-ios --release --lib
 cargo build --target x86_64-apple-ios
