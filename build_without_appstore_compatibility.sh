@@ -3,7 +3,7 @@ cargo build
 cargo test
 
 # Group binary with lipo
-cargo +ios-arm64-nightly-2021-02-25 build --target aarch64-apple-ios --release --lib
+cargo build --target aarch64-apple-ios
 cargo build --target x86_64-apple-ios
 # Print NonFat -> Ok
 lipo -info ./target/aarch64-apple-ios/debug/liblibastro.a
