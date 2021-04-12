@@ -1,7 +1,7 @@
 [package]
 name = "libastro"
-version = "0.1.4"
-authors = ["Stéphane <s.bressani@bluewin.ch>"]
+version = "0.1.5"
+authors = ["Stéphane Bressani <s.bressani@bluewin.ch>"]
 edition = "2018"
 #keyword = ["astrology", "swiss ephememeris", "planet", "ephemeris"]
 documentation = "https://github.com/stephaneworkspace/libastro"
