@@ -14,8 +14,8 @@ crate-type = ["staticlib"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-astrology = "0.1"
-libswe-sys = "0.1.56"
+astrology = "^1.0"
+libswe-sys = "0.2.0"
 serde = { version = "1.0.102", features = ["derive"] }
 serde_json = "1.0.41"
 serde_derive = "1.0.102"
