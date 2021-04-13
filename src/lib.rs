@@ -14,6 +14,7 @@ use libswe_sys::swerust::handler_swe02;
 use num_traits::FromPrimitive;
 use std::ffi::{CStr, CString};
 pub use std::os::raw::{c_char, c_double, c_int};
+use std::os::raw::c_uint;
 
 /// Return version of api
 #[no_mangle]
@@ -38,13 +39,14 @@ pub extern "C" fn sweversion() -> *const c_char {
 #[no_mangle]
 pub extern "C" fn compute(
     year: c_int,
-    month: c_int,
-    day: c_int,
-    hour: c_int,
-    min: c_int,
+    month: c_uint,
+    day: c_uint,
+    hour: c_uint,
+    min: c_uint,
     sec: c_double,
     lat: c_double,
     lng: c_double,
+    tz: c_double,
     max_size: c_double,
     language: c_int,
     path: *const c_char,
@@ -63,6 +65,7 @@ pub extern "C" fn compute(
         sec: sec as f32,
         lat: lat as f32,
         lng: lng as f32,
+        time_zone: tz as f32,
     };
     let path_c_str = unsafe { CStr::from_ptr(path) };
     let path_str: &str = path_c_str.to_str().unwrap();
@@ -96,21 +99,23 @@ pub extern "C" fn compute(
 #[no_mangle]
 pub extern "C" fn compute_transit(
     year: c_int,
-    month: c_int,
-    day: c_int,
-    hour: c_int,
-    min: c_int,
+    month: c_uint,
+    day: c_uint,
+    hour: c_uint,
+    min: c_uint,
     sec: c_double,
     lat: c_double,
     lng: c_double,
+    tz: c_double,
     year_transit: c_int,
-    month_transit: c_int,
-    day_transit: c_int,
-    hour_transit: c_int,
-    min_transit: c_int,
+    month_transit: c_uint,
+    day_transit: c_uint,
+    hour_transit: c_uint,
+    min_transit: c_uint,
     sec_transit: c_double,
     lat_transit: c_double,
     lng_transit: c_double,
+    tz_transit: c_double,
     max_size: c_double,
     language: c_int,
     path: *const c_char,
@@ -129,6 +134,7 @@ pub extern "C" fn compute_transit(
         sec: sec as f32,
         lat: lat as f32,
         lng: lng as f32,
+        time_zone: tz as f32,
     };
     let d_t = DataChartNatal {
         year: year_transit,
@@ -139,6 +145,7 @@ pub extern "C" fn compute_transit(
         sec: sec_transit as f32,
         lat: lat_transit as f32,
         lng: lng_transit as f32,
+        time_zone: tz_transit as f32,
     };
     let path_c_str = unsafe { CStr::from_ptr(path) };
     let path_str: &str = path_c_str.to_str().unwrap();
