@@ -86,14 +86,14 @@ pub extern "C" fn compute(
 /// sec           -> second of birth
 /// lat           -> latitude of birth
 /// lng           -> longitude of birth
-/// year_transit  -> year of birth
-/// month_transit -> month of birth
-/// day_transit   -> day of birth
-/// hour_transit  -> hour of birth
-/// min_transit   -> minute of birth
-/// seco_transit  -> second of birth
-/// lat_transit   -> latitude of birth
-/// lng_transit   -> longitude of birth
+/// year_transit  -> year of transit
+/// month_transit -> month of transit
+/// day_transit   -> day of transit
+/// hour_transit  -> hour of transit
+/// min_transit   -> minute of transit
+/// seco_transit  -> second of transit
+/// lat_transit   -> latitude of transit
+/// lng_transit   -> longitude of transit
 /// max_size      -> size in pixel
 /// language      -> 0 = english / 1 = french
 #[no_mangle]
